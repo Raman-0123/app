@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do App</title>
+  <style>
+    /* Enhanced CSS Styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      width: 90%;
+      max-width: 900px;
+      background-color: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .left-pane, .right-pane {
+      padding: 30px;
+    }
+
+    .left-pane {
+      width: 50%;
+      background-color: #f7f9fc;
+      border-right: 1px solid #eee;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .right-pane {
+      width: 50%;
+      background-color: #f0f4f8;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    h2 {
+      color: #333;
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .task-list {
+      list-style: none;
+      padding: 0;
+      overflow-y: auto;
+      max-height: 400px;
+    }
+
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s;
+    }
+
+    .task-item.completed {
+      background-color: #d4f7d4;
+      text-decoration: line-through;
+      color: #999;
+    }
+
+    .task-controls button {
+      margin-left: 5px;
+      border: none;
+      background: none;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .task-controls button:hover {
+      color: #007BFF;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      font-size: 1em;
+      color: #555;
+    }
+
+    input[type="text"] {
+      padding: 12px;
+      font-size: 1em;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #007BFF;
+    }
+
+    button[type="submit"] {
+      padding: 12px;
+      font-size: 1em;
+      font-weight: bold;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Left Pane - Task List -->
+    <div class="left-pane">
+      <h2>Tasks</h2>
+      <ul id="taskList" class="task-list">
+        <!-- Task items will be dynamically added here -->
+      </ul>
+    </div>
+
+    <!-- Right Pane - Task Form -->
+    <div class="right-pane">
+      <h2>Add Task</h2>
+      <form id="taskForm">
+        <label for="taskInput">Task:</label>
+        <input type="text" id="taskInput" placeholder="Enter your task" required>
+        <button type="submit">Add Task</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript for the To-Do App functionality
+
+    const taskForm = document.getElementById("taskForm");
+    const taskInput = document.getElementById("taskInput");
+    const taskList = document.getElementById("taskList");
+
+    // Function to handle adding a new task
+    taskForm.addEventListener("submit", (e) => {
+      e.preventDefault(); // Prevent form submission
+
+      const taskText = taskInput.value.trim();
+      if (taskText) {
+        addTask(taskText);
+        taskInput.value = ""; // Clear the input field
+      }
+    });
+
+    // Function to add a new task to the list
+    function addTask(taskText) {
+      const taskItem = document.createElement("li");
+      taskItem.classList.add("task-item");
+
+      // Task content
+      const taskContent = document.createElement("span");
+      taskContent.textContent = taskText;
+      taskItem.appendChild(taskContent);
+
+      // Task controls
+      const taskControls = document.createElement("div");
+      taskControls.classList.add("task-controls");
+
+      // Complete button
+      const completeButton = document.createElement("button");
+      completeButton.textContent = "✔️";
+      completeButton.addEventListener("click", () => {
+        taskItem.classList.toggle("completed");
+      });
+
+      // Delete button
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "❌";
+      deleteButton.addEventListener("click", () => {
+        taskList.removeChild(taskItem);
+      });
+
+      taskControls.appendChild(completeButton);
+      taskControls.appendChild(deleteButton);
+      taskItem.appendChild(taskControls);
+
+      taskList.appendChild(taskItem);
+    }
+  </script>
+
+</body>
+</html>
